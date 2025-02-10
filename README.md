@@ -1,2 +1,2 @@
 # cs2 trading cards type shit
-if you want one for your skin dm me
+if you want one for your skin dm me @mahonaise discord
