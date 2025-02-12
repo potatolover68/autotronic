@@ -1,0 +1,17 @@
+[
+  {
+    "name": "Karambit | Autotronic",
+    "image": "./assets/Karambit_Autotronic.png",
+    "image-alt": "With its curved blade mimicking a tiger's claw, the karambit was developed as part of the southeast Asian martial discipline of silat. The knife is typically used with a reverse grip, with the finger ring on the index finger. It has been anodized red and uses steel mesh to lighten the weight.",
+    "link": "https://steamcommunity.com/sharedfiles/filedetails/?id=3424488490",
+    "card": "./assets/Karambit_Autotronic-card.png",
+    "card-alt": "A card, not dissimilar to a trading card, in a red and white design. It reads 'KARAMBIT | AUTOTRONIC'"
+  },
+  {
+    "name": "M4A1-S | Printstream",
+    "image": "./assets/M4A1S_Printstream.png",
+    "image-alt": "With a smaller magazine than its unmuffled counterpart, the silenced M4A1 provides quieter shots with less recoil and better accuracy. It has been custom painted with a stark black and white design and finished with pearlescent highlights.",
+    "card": "./assets/M4A1S_Printstream-card.png",
+    "card-alt": "A card, not dissimilar to a trading card, in a black and white design. It looks futuristic and has a small list the price of the weapon. It reads 'M4A1-S | PRINTSTREAM'"
+  }
+]
