@@ -1,6 +1,7 @@
 [
   {
-    "name": "Karambit | Autotronic",
+    "weapon": "Karambit",
+    "finish": "Autotronic",
     "image": "./assets/Karambit_Autotronic.png",
     "image-alt": "With its curved blade mimicking a tiger's claw, the karambit was developed as part of the southeast Asian martial discipline of silat. The knife is typically used with a reverse grip, with the finger ring on the index finger. It has been anodized red and uses steel mesh to lighten the weight.",
     "link": "https://steamcommunity.com/sharedfiles/filedetails/?id=3424488490",
@@ -8,10 +9,19 @@
     "card-alt": "A card, not dissimilar to a trading card, in a red and white design. It reads 'KARAMBIT | AUTOTRONIC'"
   },
   {
-    "name": "M4A1-S | Printstream",
+    "weapon": "M4A1-S",
+    "finish": "Printstream",
     "image": "./assets/M4A1S_Printstream.png",
     "image-alt": "With a smaller magazine than its unmuffled counterpart, the silenced M4A1 provides quieter shots with less recoil and better accuracy. It has been custom painted with a stark black and white design and finished with pearlescent highlights.",
     "card": "./assets/M4A1S_Printstream-card.png",
     "card-alt": "A card, not dissimilar to a trading card, in a black and white design. It looks futuristic and has a small list the price of the weapon. It reads 'M4A1-S | PRINTSTREAM'"
+  },
+  {
+    "weapon": "AK-47",
+    "finish": "Ice Coaled",
+    "image": "./assets/ice_coaled.png",
+    "image-alt": "Powerful and reliable, the AK-47 is one of the most popular assault rifles in the world. It is most deadly in short, controlled bursts of fire. It has been custom painted with a vibrant green and blue gradient.",
+    "card": "./assets/ice_coaled-card.png",
+    "card-alt": "A card, not dissimilar to a trading card, in a blue and turquoise design. It reads 'AK47 ICE COALED'"
   }
 ]
