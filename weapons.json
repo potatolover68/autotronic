@@ -31,5 +31,21 @@
     "image-alt": "A smoke grenade designed to create a cloud of smoke that blocks vision. Essential for tactical gameplay and creating cover for your team.",
     "card": "./assets/smoke-card.png",
     "card-alt": "A card featuring the smoke grenade with a misty, ethereal design that captures its tactical utility."
+  },
+  {
+    "weapon": "Grenade",
+    "finish": "Flash",
+    "image": "./assets/flash.png",
+    "image-alt": "A flashbang grenade that creates a blinding flash of light and a loud bang, disorienting enemies caught in its radius.",
+    "card": "./assets/flash-card.png",
+    "card-alt": "A card showcasing the flashbang grenade with a bright, dynamic design emphasizing its blinding effect."
+  },
+  {
+    "weapon": "Explosive",
+    "finish": "C4",
+    "image": "./assets/c4.png",
+    "image-alt": "The C4 explosive device, a crucial element in competitive matches used by terrorists to complete their objective.",
+    "card": "./assets/c4-card.png",
+    "card-alt": "A card displaying the C4 explosive with a bold, intense design highlighting its role as a match-deciding device."
   }
 ]

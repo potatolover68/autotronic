@@ -34,28 +34,29 @@
         font-style: normal;
       }
 
-      * {
+      body {
         margin: 0;
         padding: 0;
-        box-sizing: border-box;
         font-family: "IBM Plex Mono", monospace;
+        background-color: #121212;
+        color: #fff;
+        overflow: hidden;
       }
 
       .layout {
         display: flex;
-        width: 100%;
         height: 100vh;
+        background-color: #121212;
+        overflow: hidden;
       }
 
       .sidebar {
         width: 300px;
         background-color: #1a1a1a;
         height: 100vh;
-        overflow-y: auto;
-        padding: 20px;
-        border-right: 1px solid #333;
         display: flex;
         flex-direction: column;
+        border-right: 1px solid #333;
         transition: all 0.3s ease;
       }
 
@@ -69,10 +70,11 @@
         align-items: center;
         text-align: center;
         gap: 15px;
-        margin-bottom: 15px;
-        padding-bottom: 15px;
+        padding: 20px;
         border-bottom: 1px solid #333;
         transition: all 0.3s ease;
+        background: #1a1a1a;
+        z-index: 2;
       }
 
       .sidebar-header img {
@@ -112,7 +114,6 @@
         flex-direction: column;
         gap: 10px;
         margin-bottom: 15px;
-        padding-bottom: 15px;
         border-bottom: 1px solid #333;
         transition: all 0.3s ease;
       }
@@ -129,62 +130,118 @@
         gap: 5px;
       }
 
-      .search-bar input {
-        flex: 1;
-        background: #2a2a2a;
-        border: 1px solid #333;
-        color: #fff;
+      .search-input {
+        width: 100%;
         padding: 8px 12px;
-        border-radius: 4px;
+        background-color: #262626;
+        border: none;
+        color: #fff;
         font-family: inherit;
-        transition: all 0.3s ease;
+        font-size: 14px;
       }
 
-      .sidebar.compact .search-bar input {
-        padding: 4px 8px;
-        font-size: 12px;
-        background: transparent;
-        border-color: #222;
+      .search-input:focus {
+        outline: none;
+        background-color: #333;
       }
 
       .view-options {
+        padding: 15px 20px;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        background: #1a1a1a;
+        border-bottom: 1px solid #262626;
+      }
+
+      .view-options .github {
         display: flex;
-        gap: 10px;
-        transition: gap 0.3s ease;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        text-decoration: none;
+      }
+
+      .view-options .github svg {
+        width: 14px;
+        height: 14px;
+        fill: currentColor;
       }
 
       .sidebar.compact .view-options {
-        gap: 4px;
+        padding: 8px;
       }
 
-      .view-options button {
-        flex: 1;
-        background: #2a2a2a;
-        border: 1px solid #333;
-        color: #fff;
-        padding: 8px 12px;
-        border-radius: 4px;
+      .view-options button,
+      .view-options .github {
+        padding: 8px;
+        background-color: #262626;
+        border: none;
+        color: #999;
         cursor: pointer;
         font-family: inherit;
-        font-size: 12px;
-        transition: all 0.3s ease;
+        font-size: 13px;
+        transition: all 0.2s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
       }
 
-      .sidebar.compact .view-options button {
-        padding: 4px 8px;
-        font-size: 11px;
-        background: transparent;
-        border-color: #222;
+      .view-options button:hover,
+      .view-options .github:hover {
+        background-color: #333;
+        color: #fff;
       }
 
       .view-options button.active {
-        background: #404040;
-        border-color: #666;
+        background-color: #333;
+        color: #fff;
       }
 
-      .sidebar.compact .view-options button {
-        background: transparent;
-        border-color: #222;
+      .sidebar.compact .view-options button,
+      .sidebar.compact .view-options .github {
+        font-size: 12px;
+        padding: 6px;
+      }
+
+      .weapon-selector {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        overflow-y: scroll;
+        flex: 1;
+        padding: 15px 20px;
+        height: 0; /* Forces scrolling in flex child */
+      }
+
+      .sidebar.compact .weapon-selector {
+        padding: 0;
+      }
+
+      .weapon-selector::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      .weapon-selector::-webkit-scrollbar-track {
+        background: #1a1a1a;
+        border-radius: 4px;
+      }
+
+      .weapon-selector::-webkit-scrollbar-thumb {
+        background: #333;
+        border-radius: 4px;
+        border: 2px solid #1a1a1a;
+      }
+
+      .weapon-selector::-webkit-scrollbar-thumb:hover {
+        background: #444;
+      }
+
+      .sidebar.compact .weapon-selector::-webkit-scrollbar {
+        width: 4px;
+      }
+
+      .sidebar.compact .weapon-selector::-webkit-scrollbar-thumb {
+        border: none;
       }
 
       .weapon-selector {
@@ -193,11 +250,12 @@
         gap: 10px;
         overflow-y: auto;
         flex: 1;
-        transition: gap 0.3s ease;
+        padding: 15px 20px;
+        min-height: 0; /* Critical for flex child scrolling */
       }
 
       .sidebar.compact .weapon-selector {
-        gap: 4px;
+        scrollbar-width: thin;
       }
 
       .weapon-category {
@@ -206,7 +264,7 @@
         overflow: hidden;
         border: 1px solid #333;
         transition: all 0.3s ease;
-        margin-bottom: 10px;
+        flex-shrink: 0; /* Prevent category collapse */
       }
 
       .weapon-category:last-child {
@@ -351,13 +409,19 @@
       }
 
       .container {
-        flex: 1;
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: calc(100% - 300px);
         height: 100vh;
         display: flex;
-        overflow: hidden;
-        justify-content: center;
         align-items: center;
-        background-color: #212121;
+        justify-content: center;
+        z-index: 10;
+      }
+
+      .sidebar.compact + .container {
+        width: calc(100% - 300px);
       }
 
       .card img:not(.front) {
@@ -393,17 +457,20 @@
         opacity: 0;
         transition: opacity 0.3s ease;
         display: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       .fire-overlay.active {
-        display: block;
+        display: flex;
         opacity: 1;
         pointer-events: all;
       }
 
       .fire-container {
-        width: 100%;
-        height: 100%;
+        width: 100vw;
+        height: 100vh;
         transform-style: preserve-3d;
         transform: perspective(1000px);
       }
@@ -411,7 +478,7 @@
       .fire-overlay img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain;
         transform: translateZ(20px);
         will-change: transform;
       }
@@ -420,27 +487,30 @@
         .layout {
           flex-direction: column;
         }
-        .sidebar {
-          width: 100%;
-          height: 200px;
-        }
-        .weapon-selector {
-          flex-direction: row;
-          overflow-x: auto;
-          padding-bottom: 10px;
-        }
-        .weapon-card {
-          min-width: 200px;
-        }
+
         .container {
-          height: calc(100vh - 200px);
+          position: relative;
+          width: 100%;
+          height: auto;
+          min-height: 50vh;
+        }
+
+        .sidebar.compact + .container {
+          width: 100%;
         }
       }
     </style>
   </head>
   <body>
     <div class="fire-overlay">
-      <div class="fire-container" data-tilt data-tilt-max="5" data-tilt-speed="1000" data-tilt-scale="1.1" data-tilt-perspective="500">
+      <div
+        class="fire-container"
+        data-tilt
+        data-tilt-max="5"
+        data-tilt-speed="1000"
+        data-tilt-scale="1.1"
+        data-tilt-perspective="500"
+      >
         <img src="./assets/fire.webp" alt="Fire overlay" />
       </div>
     </div>
@@ -456,12 +526,26 @@
               type="text"
               id="searchInput"
               placeholder="Search weapons..."
+              class="search-input"
             />
           </div>
           <div class="view-options">
             <button id="toggleImages" class="active">Show Images</button>
-            <button id="toggleCompact">Compact Mode</button>
+            <button id="toggleCompact">Compact</button>
             <button id="expandAll">Expand All</button>
+            <a
+              href="https://github.com/potatolover68/autotronic"
+              class="github"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <svg viewBox="0 0 16 16">
+                <path
+                  d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+                />
+              </svg>
+              GitHub
+            </a>
           </div>
         </div>
         <div class="weapon-selector" id="weaponSelector">
@@ -885,120 +969,142 @@
       let isCompact = false;
 
       // Handle fire overlay
-      const fireOverlay = document.querySelector('.fire-overlay');
-      document.addEventListener('keydown', (e) => {
-        if (e.key.toLowerCase() === 'f' && document.activeElement !== document.getElementById('searchInput')) {
-          fireOverlay.classList.add('active');
+      const fireOverlay = document.querySelector(".fire-overlay");
+      const fireImage = fireOverlay.querySelector("img");
+
+      document.addEventListener("keydown", (e) => {
+        if (
+          e.key.toLowerCase() === "f" &&
+          document.activeElement !== document.getElementById("searchInput")
+        ) {
+          // 10% chance for fire2.webp
+          fireImage.src =
+            Math.random() < 0.1 ? "./assets/fire2.webp" : "./assets/fire.webp";
+          fireOverlay.classList.add("active");
         }
       });
 
-      document.addEventListener('keyup', (e) => {
-        if (e.key.toLowerCase() === 'f') {
-          fireOverlay.classList.remove('active');
+      document.addEventListener("keyup", (e) => {
+        if (e.key.toLowerCase() === "f") {
+          fireOverlay.classList.remove("active");
         }
       });
 
       function updateWeaponDisplay(weapon) {
-        const weaponCard = document.getElementById('weaponCard');
-        const weaponFront = document.getElementById('weaponFront');
-        const weaponBack = document.getElementById('weaponBack');
+        const weaponCard = document.getElementById("weaponCard");
+        const weaponFront = document.getElementById("weaponFront");
+        const weaponBack = document.getElementById("weaponBack");
 
         // Update images
         weaponFront.src = weapon.image;
-        weaponFront.alt = weapon['image-alt'];
+        weaponFront.alt = weapon["image-alt"];
         weaponBack.src = weapon.card;
-        weaponBack.alt = weapon['card-alt'];
+        weaponBack.alt = weapon["card-alt"];
 
         // Handle link
         if (weapon.link) {
-          const link = document.createElement('a');
+          const link = document.createElement("a");
           link.href = weapon.link;
-          link.className = 'card';
-          link.setAttribute('data-tilt', '');
-          link.setAttribute('data-tilt-reset', 'false');
-          link.setAttribute('data-tilt-full-page-listening', '');
-          
+          link.className = "card";
+          link.setAttribute("data-tilt", "");
+          link.setAttribute("data-tilt-reset", "false");
+          link.setAttribute("data-tilt-full-page-listening", "");
+
           // Move images to link
           link.appendChild(weaponFront.cloneNode(true));
           link.appendChild(weaponBack.cloneNode(true));
-          
+
           // Replace div with link
           weaponCard.parentNode.replaceChild(link, weaponCard);
-          link.id = 'weaponCard';
+          link.id = "weaponCard";
         } else {
           // If there's currently a link and we need to switch to a div
-          if (weaponCard.tagName.toLowerCase() === 'a') {
-            const div = document.createElement('div');
-            div.className = 'card';
-            div.setAttribute('data-tilt', '');
-            div.setAttribute('data-tilt-reset', 'false');
-            div.setAttribute('data-tilt-full-page-listening', '');
-            
+          if (weaponCard.tagName.toLowerCase() === "a") {
+            const div = document.createElement("div");
+            div.className = "card";
+            div.setAttribute("data-tilt", "");
+            div.setAttribute("data-tilt-reset", "false");
+            div.setAttribute("data-tilt-full-page-listening", "");
+
             // Move images to div
             div.appendChild(weaponFront.cloneNode(true));
             div.appendChild(weaponBack.cloneNode(true));
-            
+
             // Replace link with div
             weaponCard.parentNode.replaceChild(div, weaponCard);
-            div.id = 'weaponCard';
+            div.id = "weaponCard";
           }
         }
       }
 
       function toggleCategory(categoryDiv) {
-        categoryDiv.classList.toggle('collapsed');
+        categoryDiv.classList.toggle("collapsed");
       }
 
       function filterWeapons(searchText) {
         const searchLower = searchText.toLowerCase();
-        document.querySelectorAll('.weapon-category').forEach(category => {
-          const categoryName = category.querySelector('h2').textContent.toLowerCase();
-          const weapons = Array.from(category.querySelectorAll('.weapon-card'));
-          
-          const hasVisibleWeapons = weapons.some(card => {
-            const weaponName = card.querySelector('h3').textContent.toLowerCase();
-            const isVisible = categoryName.includes(searchLower) || weaponName.includes(searchLower);
-            card.style.display = isVisible ? '' : 'none';
+        document.querySelectorAll(".weapon-category").forEach((category) => {
+          const categoryName = category
+            .querySelector("h2")
+            .textContent.toLowerCase();
+          const weapons = Array.from(category.querySelectorAll(".weapon-card"));
+
+          const hasVisibleWeapons = weapons.some((card) => {
+            const weaponName = card
+              .querySelector("h3")
+              .textContent.toLowerCase();
+            const isVisible =
+              categoryName.includes(searchLower) ||
+              weaponName.includes(searchLower);
+            card.style.display = isVisible ? "" : "none";
             return isVisible;
           });
-          
-          category.style.display = hasVisibleWeapons ? '' : 'none';
+
+          category.style.display = hasVisibleWeapons ? "" : "none";
         });
       }
 
       function toggleImages() {
         showImages = !showImages;
-        document.querySelectorAll('.weapon-card').forEach(card => {
-          card.classList.toggle('hide-images', !showImages);
+        document.querySelectorAll(".weapon-card").forEach((card) => {
+          card.classList.toggle("hide-images", !showImages);
         });
-        document.getElementById('toggleImages').classList.toggle('active', showImages);
+        document
+          .getElementById("toggleImages")
+          .classList.toggle("active", showImages);
       }
 
       function toggleCompactMode() {
         isCompact = !isCompact;
-        document.querySelector('.sidebar').classList.toggle('compact', isCompact);
-        document.getElementById('toggleCompact').classList.toggle('active', isCompact);
+        document
+          .querySelector(".sidebar")
+          .classList.toggle("compact", isCompact);
+        document
+          .getElementById("toggleCompact")
+          .classList.toggle("active", isCompact);
       }
 
       function expandAll() {
-        const isAnyCollapsed = Array.from(document.querySelectorAll('.weapon-category')).some(
-          cat => cat.classList.contains('collapsed')
-        );
-        
-        document.querySelectorAll('.weapon-category').forEach(category => {
-          category.classList.toggle('collapsed', !isAnyCollapsed);
+        const isAnyCollapsed = Array.from(
+          document.querySelectorAll(".weapon-category")
+        ).some((cat) => cat.classList.contains("collapsed"));
+
+        document.querySelectorAll(".weapon-category").forEach((category) => {
+          category.classList.toggle("collapsed", !isAnyCollapsed);
         });
-        
-        document.getElementById('expandAll').textContent = isAnyCollapsed ? 'Collapse All' : 'Expand All';
+
+        document.getElementById("expandAll").textContent = isAnyCollapsed
+          ? "Collapse All"
+          : "Expand All";
       }
 
-      fetch('./weapons.json')
-        .then(response => response.json())
-        .then(data => {
+      fetch("./weapons.json")
+        .then((response) => response.json())
+        .then((data) => {
           weapons = data;
-          const weaponSelector = document.getElementById('weaponSelector');
-          weaponSelector.innerHTML = '';
-          
+          const weaponSelector = document.getElementById("weaponSelector");
+          weaponSelector.innerHTML = "";
+
           const weaponGroups = weapons.reduce((groups, weapon) => {
             if (!groups[weapon.weapon]) {
               groups[weapon.weapon] = [];
@@ -1009,58 +1115,71 @@
 
           Object.entries(weaponGroups).forEach(
             ([category, categoryWeapons]) => {
-              const categoryDiv = document.createElement('div');
-              categoryDiv.className = 'weapon-category';
+              const categoryDiv = document.createElement("div");
+              categoryDiv.className = "weapon-category";
 
-              const header = document.createElement('div');
-              header.className = 'category-header';
+              const header = document.createElement("div");
+              header.className = "category-header";
               header.innerHTML = `
               <h2>${category}</h2>
               <span class="arrow">▼</span>
             `;
-              header.addEventListener('click', () => toggleCategory(categoryDiv));
+              header.addEventListener("click", () =>
+                toggleCategory(categoryDiv)
+              );
 
-              const content = document.createElement('div');
-              content.className = 'category-content';
+              const content = document.createElement("div");
+              content.className = "category-content";
 
-              categoryWeapons.forEach(weapon => {
-                const card = document.createElement('div');
-                card.className = 'weapon-card';
+              categoryWeapons.forEach((weapon) => {
+                const card = document.createElement("div");
+                card.className = "weapon-card";
                 card.innerHTML = `
-                <img src="${weapon.image}" alt="${weapon['image-alt']}" />
+                <img src="${weapon.image}" alt="${weapon["image-alt"]}" />
                 <h3>${weapon.finish}</h3>
               `;
 
-              card.addEventListener('click', () => {
-                document.querySelectorAll('.weapon-card').forEach(c => c.classList.remove('active'));
-                card.classList.add('active');
-                updateWeaponDisplay(weapon);
+                card.addEventListener("click", () => {
+                  document
+                    .querySelectorAll(".weapon-card")
+                    .forEach((c) => c.classList.remove("active"));
+                  card.classList.add("active");
+                  updateWeaponDisplay(weapon);
+                });
+
+                content.appendChild(card);
               });
 
-              content.appendChild(card);
-            });
+              categoryDiv.appendChild(header);
+              categoryDiv.appendChild(content);
+              weaponSelector.appendChild(categoryDiv);
+            }
+          );
 
-            categoryDiv.appendChild(header);
-            categoryDiv.appendChild(content);
-            weaponSelector.appendChild(categoryDiv);
-          });
-
-          const firstCard = document.querySelector('.weapon-card');
+          const firstCard = document.querySelector(".weapon-card");
           if (firstCard) {
             firstCard.click();
           }
 
           // Setup event listeners
-          document.getElementById('searchInput').addEventListener('input', (e) => {
-            filterWeapons(e.target.value);
-          });
+          document
+            .getElementById("searchInput")
+            .addEventListener("input", (e) => {
+              filterWeapons(e.target.value);
+            });
 
-          document.getElementById('toggleImages').addEventListener('click', toggleImages);
-          document.getElementById('toggleCompact').addEventListener('click', toggleCompactMode);
-          document.getElementById('expandAll').addEventListener('click', expandAll);
+          document
+            .getElementById("toggleImages")
+            .addEventListener("click", toggleImages);
+          document
+            .getElementById("toggleCompact")
+            .addEventListener("click", toggleCompactMode);
+          document
+            .getElementById("expandAll")
+            .addEventListener("click", expandAll);
         })
-        .catch(error => {
-          console.error('Error loading weapons:', error);
+        .catch((error) => {
+          console.error("Error loading weapons:", error);
         });
     </script>
   </body>
