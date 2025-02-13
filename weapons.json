@@ -23,5 +23,13 @@
     "image-alt": "Powerful and reliable, the AK-47 is one of the most popular assault rifles in the world. It is most deadly in short, controlled bursts of fire. It has been custom painted with a vibrant green and blue gradient.",
     "card": "./assets/ice_coaled-card.png",
     "card-alt": "A card, not dissimilar to a trading card, in a blue and turquoise design. It reads 'AK47 ICE COALED'"
+  },
+  {
+    "weapon": "Grenade",
+    "finish": "Smoke",
+    "image": "./assets/smoke.png",
+    "image-alt": "A smoke grenade designed to create a cloud of smoke that blocks vision. Essential for tactical gameplay and creating cover for your team.",
+    "card": "./assets/smoke-card.png",
+    "card-alt": "A card featuring the smoke grenade with a misty, ethereal design that captures its tactical utility."
   }
 ]
