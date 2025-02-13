@@ -182,6 +182,11 @@
         border-color: #666;
       }
 
+      .sidebar.compact .view-options button {
+        background: transparent;
+        border-color: #222;
+      }
+
       .weapon-selector {
         display: flex;
         flex-direction: column;
@@ -285,6 +290,14 @@
         border-radius: 0;
       }
 
+      .weapon-card.hide-images img {
+        display: none;
+      }
+
+      .weapon-card.hide-images h3 {
+        margin: 0;
+      }
+
       .weapon-card:hover {
         background-color: #333;
         transform: translateY(-2px);
@@ -369,6 +382,40 @@
         transform: translateZ(50px);
       }
 
+      .fire-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 9999;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        display: none;
+      }
+
+      .fire-overlay.active {
+        display: block;
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      .fire-container {
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transform: perspective(1000px);
+      }
+
+      .fire-overlay img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transform: translateZ(20px);
+        will-change: transform;
+      }
+
       @media (max-width: 768px) {
         .layout {
           flex-direction: column;
@@ -392,6 +439,11 @@
     </style>
   </head>
   <body>
+    <div class="fire-overlay">
+      <div class="fire-container" data-tilt data-tilt-max="5" data-tilt-speed="1000" data-tilt-scale="1.1" data-tilt-perspective="500">
+        <img src="./assets/fire.webp" alt="Fire overlay" />
+      </div>
+    </div>
     <div class="layout">
       <div class="sidebar">
         <div class="sidebar-header">
@@ -417,7 +469,7 @@
         </div>
       </div>
       <div class="container">
-        <a
+        <div
           class="card"
           id="weaponCard"
           data-tilt
@@ -426,7 +478,7 @@
         >
           <img id="weaponFront" src="" alt="" class="front" />
           <img id="weaponBack" src="" alt="" data-tilt-glare="true" />
-        </a>
+        </div>
       </div>
     </div>
     <script>
@@ -832,74 +884,121 @@
       let showImages = true;
       let isCompact = false;
 
+      // Handle fire overlay
+      const fireOverlay = document.querySelector('.fire-overlay');
+      document.addEventListener('keydown', (e) => {
+        if (e.key.toLowerCase() === 'f' && document.activeElement !== document.getElementById('searchInput')) {
+          fireOverlay.classList.add('active');
+        }
+      });
+
+      document.addEventListener('keyup', (e) => {
+        if (e.key.toLowerCase() === 'f') {
+          fireOverlay.classList.remove('active');
+        }
+      });
+
+      function updateWeaponDisplay(weapon) {
+        const weaponCard = document.getElementById('weaponCard');
+        const weaponFront = document.getElementById('weaponFront');
+        const weaponBack = document.getElementById('weaponBack');
+
+        // Update images
+        weaponFront.src = weapon.image;
+        weaponFront.alt = weapon['image-alt'];
+        weaponBack.src = weapon.card;
+        weaponBack.alt = weapon['card-alt'];
+
+        // Handle link
+        if (weapon.link) {
+          const link = document.createElement('a');
+          link.href = weapon.link;
+          link.className = 'card';
+          link.setAttribute('data-tilt', '');
+          link.setAttribute('data-tilt-reset', 'false');
+          link.setAttribute('data-tilt-full-page-listening', '');
+          
+          // Move images to link
+          link.appendChild(weaponFront.cloneNode(true));
+          link.appendChild(weaponBack.cloneNode(true));
+          
+          // Replace div with link
+          weaponCard.parentNode.replaceChild(link, weaponCard);
+          link.id = 'weaponCard';
+        } else {
+          // If there's currently a link and we need to switch to a div
+          if (weaponCard.tagName.toLowerCase() === 'a') {
+            const div = document.createElement('div');
+            div.className = 'card';
+            div.setAttribute('data-tilt', '');
+            div.setAttribute('data-tilt-reset', 'false');
+            div.setAttribute('data-tilt-full-page-listening', '');
+            
+            // Move images to div
+            div.appendChild(weaponFront.cloneNode(true));
+            div.appendChild(weaponBack.cloneNode(true));
+            
+            // Replace link with div
+            weaponCard.parentNode.replaceChild(div, weaponCard);
+            div.id = 'weaponCard';
+          }
+        }
+      }
+
       function toggleCategory(categoryDiv) {
-        categoryDiv.classList.toggle("collapsed");
+        categoryDiv.classList.toggle('collapsed');
       }
 
       function filterWeapons(searchText) {
         const searchLower = searchText.toLowerCase();
-        document.querySelectorAll(".weapon-category").forEach((category) => {
-          const categoryName = category
-            .querySelector("h2")
-            .textContent.toLowerCase();
-          const weapons = Array.from(category.querySelectorAll(".weapon-card"));
-
-          const hasVisibleWeapons = weapons.some((card) => {
-            const weaponName = card
-              .querySelector("h3")
-              .textContent.toLowerCase();
-            const isVisible =
-              categoryName.includes(searchLower) ||
-              weaponName.includes(searchLower);
-            card.style.display = isVisible ? "" : "none";
+        document.querySelectorAll('.weapon-category').forEach(category => {
+          const categoryName = category.querySelector('h2').textContent.toLowerCase();
+          const weapons = Array.from(category.querySelectorAll('.weapon-card'));
+          
+          const hasVisibleWeapons = weapons.some(card => {
+            const weaponName = card.querySelector('h3').textContent.toLowerCase();
+            const isVisible = categoryName.includes(searchLower) || weaponName.includes(searchLower);
+            card.style.display = isVisible ? '' : 'none';
             return isVisible;
           });
-
-          category.style.display = hasVisibleWeapons ? "" : "none";
+          
+          category.style.display = hasVisibleWeapons ? '' : 'none';
         });
       }
 
       function toggleImages() {
         showImages = !showImages;
-        document.querySelectorAll(".weapon-card").forEach((card) => {
-          card.classList.toggle("compact", !showImages);
+        document.querySelectorAll('.weapon-card').forEach(card => {
+          card.classList.toggle('hide-images', !showImages);
         });
-        document
-          .getElementById("toggleImages")
-          .classList.toggle("active", showImages);
+        document.getElementById('toggleImages').classList.toggle('active', showImages);
       }
 
       function toggleCompactMode() {
         isCompact = !isCompact;
-        document
-          .querySelector(".sidebar")
-          .classList.toggle("compact", isCompact);
-        document
-          .getElementById("toggleCompact")
-          .classList.toggle("active", isCompact);
+        document.querySelector('.sidebar').classList.toggle('compact', isCompact);
+        document.getElementById('toggleCompact').classList.toggle('active', isCompact);
       }
 
       function expandAll() {
-        const isAnyCollapsed = Array.from(
-          document.querySelectorAll(".weapon-category")
-        ).some((cat) => cat.classList.contains("collapsed"));
-
-        document.querySelectorAll(".weapon-category").forEach((category) => {
-          category.classList.toggle("collapsed", !isAnyCollapsed);
+        const isAnyCollapsed = Array.from(document.querySelectorAll('.weapon-category')).some(
+          cat => cat.classList.contains('collapsed')
+        );
+        
+        document.querySelectorAll('.weapon-category').forEach(category => {
+          category.classList.toggle('collapsed', !isAnyCollapsed);
         });
-
-        document.getElementById("expandAll").textContent = isAnyCollapsed
-          ? "Collapse All"
-          : "Expand All";
+        
+        document.getElementById('expandAll').textContent = isAnyCollapsed ? 'Collapse All' : 'Expand All';
       }
 
-      fetch("./weapons.json")
-        .then((response) => response.json())
-        .then((data) => {
+      fetch('./weapons.json')
+        .then(response => response.json())
+        .then(data => {
           weapons = data;
-          const weaponSelector = document.getElementById("weaponSelector");
-          weaponSelector.innerHTML = "";
-
+          const weaponSelector = document.getElementById('weaponSelector');
+          weaponSelector.innerHTML = '';
+          
           const weaponGroups = weapons.reduce((groups, weapon) => {
             if (!groups[weapon.weapon]) {
               groups[weapon.weapon] = [];
@@ -910,82 +1009,58 @@
 
           Object.entries(weaponGroups).forEach(
             ([category, categoryWeapons]) => {
-              const categoryDiv = document.createElement("div");
-              categoryDiv.className = "weapon-category";
+              const categoryDiv = document.createElement('div');
+              categoryDiv.className = 'weapon-category';
 
-              const header = document.createElement("div");
-              header.className = "category-header";
+              const header = document.createElement('div');
+              header.className = 'category-header';
               header.innerHTML = `
               <h2>${category}</h2>
               <span class="arrow">▼</span>
             `;
-              header.addEventListener("click", () =>
-                toggleCategory(categoryDiv)
-              );
+              header.addEventListener('click', () => toggleCategory(categoryDiv));
 
-              const content = document.createElement("div");
-              content.className = "category-content";
+              const content = document.createElement('div');
+              content.className = 'category-content';
 
-              categoryWeapons.forEach((weapon) => {
-                const card = document.createElement("div");
-                card.className = "weapon-card";
+              categoryWeapons.forEach(weapon => {
+                const card = document.createElement('div');
+                card.className = 'weapon-card';
                 card.innerHTML = `
-                <img src="${weapon.image}" alt="${weapon["image-alt"]}" />
+                <img src="${weapon.image}" alt="${weapon['image-alt']}" />
                 <h3>${weapon.finish}</h3>
               `;
 
-                card.addEventListener("click", () => {
-                  document
-                    .querySelectorAll(".weapon-card")
-                    .forEach((c) => c.classList.remove("active"));
-                  card.classList.add("active");
-
-                  const weaponCard = document.getElementById("weaponCard");
-                  const weaponFront = document.getElementById("weaponFront");
-                  const weaponBack = document.getElementById("weaponBack");
-
-                  weaponFront.src = weapon.image;
-                  weaponFront.alt = weapon["image-alt"];
-                  weaponBack.src = weapon.card;
-                  weaponBack.alt = weapon["card-alt"];
-                  if (weapon.link) {
-                    weaponCard.href = weapon.link;
-                  }
-                });
-
-                content.appendChild(card);
+              card.addEventListener('click', () => {
+                document.querySelectorAll('.weapon-card').forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+                updateWeaponDisplay(weapon);
               });
 
-              categoryDiv.appendChild(header);
-              categoryDiv.appendChild(content);
-              weaponSelector.appendChild(categoryDiv);
-            }
-          );
+              content.appendChild(card);
+            });
 
-          const firstCard = document.querySelector(".weapon-card");
+            categoryDiv.appendChild(header);
+            categoryDiv.appendChild(content);
+            weaponSelector.appendChild(categoryDiv);
+          });
+
+          const firstCard = document.querySelector('.weapon-card');
           if (firstCard) {
             firstCard.click();
           }
 
           // Setup event listeners
-          document
-            .getElementById("searchInput")
-            .addEventListener("input", (e) => {
-              filterWeapons(e.target.value);
-            });
+          document.getElementById('searchInput').addEventListener('input', (e) => {
+            filterWeapons(e.target.value);
+          });
 
-          document
-            .getElementById("toggleImages")
-            .addEventListener("click", toggleImages);
-          document
-            .getElementById("toggleCompact")
-            .addEventListener("click", toggleCompactMode);
-          document
-            .getElementById("expandAll")
-            .addEventListener("click", expandAll);
+          document.getElementById('toggleImages').addEventListener('click', toggleImages);
+          document.getElementById('toggleCompact').addEventListener('click', toggleCompactMode);
+          document.getElementById('expandAll').addEventListener('click', expandAll);
         })
-        .catch((error) => {
-          console.error("Error loading weapons:", error);
+        .catch(error => {
+          console.error('Error loading weapons:', error);
         });
     </script>
   </body>
