@@ -1003,7 +1003,10 @@
         ) {
           if (!isFireActive) {
             // Only roll for fire2 when first activating
-            fireImage.src = Math.random() < 0.1 ? "./assets/fire2.webp" : "./assets/fire.webp";
+            fireImage.src =
+              Math.random() < 0.1
+                ? "./assets/fire2.webp"
+                : "./assets/fire.webp";
             fireImageSet = true;
           }
           isFireActive = true;
