@@ -424,26 +424,43 @@
         width: calc(100% - 300px);
       }
 
-      .card img:not(.front) {
-        background-color: #212121;
-        width: 50%;
-      }
-
       .card {
         width: 50%;
-        height: clamp(auto, auto, 100vh);
+        max-width: 800px;
+        height: auto;
+        aspect-ratio: 1;
         transform-style: preserve-3d;
         transform: perspective(1000px);
         justify-content: center;
         align-items: center;
         display: flex;
+        position: relative;
+      }
+
+      .card img {
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+      }
+
+      .card img:not(.front) {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
       }
 
       .front {
         position: absolute;
         width: 75%;
+        height: auto;
+        max-height: 75%;
         background-color: transparent;
-        transform: translateZ(50px);
+        transform: translateZ(50px) scale(1.2);
+        object-fit: contain;
       }
 
       .fire-overlay {
@@ -559,9 +576,12 @@
           data-tilt
           data-tilt-reset="false"
           data-tilt-full-page-listening
+          data-tilt-max="15"
+          data-tilt-speed="400"
+          data-tilt-perspective="1000"
         >
           <img id="weaponFront" src="" alt="" class="front" />
-          <img id="weaponBack" src="" alt="" data-tilt-glare="true" />
+          <img id="weaponBack" src="" alt="" />
         </div>
       </div>
     </div>
@@ -1009,6 +1029,9 @@
           link.setAttribute("data-tilt", "");
           link.setAttribute("data-tilt-reset", "false");
           link.setAttribute("data-tilt-full-page-listening", "");
+          link.setAttribute("data-tilt-max", "15");
+          link.setAttribute("data-tilt-speed", "400");
+          link.setAttribute("data-tilt-perspective", "1000");
 
           // Move images to link
           link.appendChild(weaponFront.cloneNode(true));
@@ -1017,6 +1040,7 @@
           // Replace div with link
           weaponCard.parentNode.replaceChild(link, weaponCard);
           link.id = "weaponCard";
+          VanillaTilt.init(link); // Initialize tilt on the new link
         } else {
           // If there's currently a link and we need to switch to a div
           if (weaponCard.tagName.toLowerCase() === "a") {
@@ -1025,6 +1049,9 @@
             div.setAttribute("data-tilt", "");
             div.setAttribute("data-tilt-reset", "false");
             div.setAttribute("data-tilt-full-page-listening", "");
+            div.setAttribute("data-tilt-max", "15");
+            div.setAttribute("data-tilt-speed", "400");
+            div.setAttribute("data-tilt-perspective", "1000");
 
             // Move images to div
             div.appendChild(weaponFront.cloneNode(true));
@@ -1033,6 +1060,7 @@
             // Replace link with div
             weaponCard.parentNode.replaceChild(div, weaponCard);
             div.id = "weaponCard";
+            VanillaTilt.init(div); // Initialize tilt on the new div
           }
         }
       }
