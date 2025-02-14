@@ -90,3 +90,33 @@ the code is under the [AGPL v3](https://www.gnu.org/licenses/agpl-3.0.html) lice
   - `fonts/` - IBM Plex Mono font files
   - `logo.svg` - dunce.party logo
   - `fire.webp`, `fire2.webp` - press f do discover whatever this is
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+augh
