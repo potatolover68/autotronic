@@ -455,12 +455,14 @@
 
       .front {
         position: absolute;
-        width: 75%;
-        height: auto;
-        max-height: 75%;
+        width: auto;
+        height: 150%;
+        max-width: none;
         background-color: transparent;
-        transform: translateZ(50px) scale(1.2);
+        transform: translate(-50%, -50%) translateZ(50px) scale(1.2);
         object-fit: contain;
+        top: 50%;
+        left: 50%;
       }
 
       .fire-overlay {
