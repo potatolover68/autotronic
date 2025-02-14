@@ -993,22 +993,29 @@
       // Handle fire overlay
       const fireOverlay = document.querySelector(".fire-overlay");
       const fireImage = fireOverlay.querySelector("img");
+      let isFireActive = false;
+      let fireImageSet = false;
 
       document.addEventListener("keydown", (e) => {
         if (
           e.key.toLowerCase() === "f" &&
           document.activeElement !== document.getElementById("searchInput")
         ) {
-          // 10% chance for fire2.webp
-          fireImage.src =
-            Math.random() < 0.1 ? "./assets/fire2.webp" : "./assets/fire.webp";
+          if (!isFireActive) {
+            // Only roll for fire2 when first activating
+            fireImage.src = Math.random() < 0.1 ? "./assets/fire2.webp" : "./assets/fire.webp";
+            fireImageSet = true;
+          }
+          isFireActive = true;
           fireOverlay.classList.add("active");
         }
       });
 
       document.addEventListener("keyup", (e) => {
         if (e.key.toLowerCase() === "f") {
+          isFireActive = false;
           fireOverlay.classList.remove("active");
+          fireImageSet = false;
         }
       });
 
