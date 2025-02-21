@@ -7,6 +7,8 @@ An interactive web viewer for CS:GO weapons in the style of a Trading Card.
 this site's art is licensed under the [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 this sites code uses https://micku7zu.github.io/vanilla-tilt.js/ under the [MIT License](https://github.com/micku7zu/vanilla-tilt.js/blob/master/LICENSE)
 
+csgoitems.dev: https://drive.google.com/file/d/1HVAFL85yoonOeP3hxbas3MG7Wcs3OLJP/view?usp=sharing
+
 the code is under the [AGPL v3](https://www.gnu.org/licenses/agpl-3.0.html) license
 
 ## Features
@@ -90,3 +92,33 @@ the code is under the [AGPL v3](https://www.gnu.org/licenses/agpl-3.0.html) lice
   - `fonts/` - IBM Plex Mono font files
   - `logo.svg` - dunce.party logo
   - `fire.webp`, `fire2.webp` - press f do discover whatever this is
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+augh
